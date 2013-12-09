@@ -245,18 +245,18 @@
       }
     }
 
-    if (ajaxBeforeSend(xhr, settings) === false) {
-      xhr.abort()
-      ajaxError(null, 'abort', xhr, settings, deferred)
-      return xhr
-    }
-
     if (settings.xhrFields) for (name in settings.xhrFields) xhr[name] = settings.xhrFields[name]
 
     var async = 'async' in settings ? settings.async : true
     xhr.open(settings.type, settings.url, async, settings.username, settings.password)
 
     for (name in settings.headers) xhr.setRequestHeader(name, settings.headers[name])
+
+    if (ajaxBeforeSend(xhr, settings) === false) {
+      xhr.abort()
+      ajaxError(null, 'abort', xhr, settings, deferred)
+      return xhr
+    }
 
     if (settings.timeout > 0) abortTimeout = setTimeout(function(){
         xhr.onreadystatechange = empty
